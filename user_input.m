@@ -1,9 +1,9 @@
-function [fullFilePath, bandsArray] = user_input()
+function [fullFilePath, bandsArray, out_fs] = user_input()
     disp("Please choose the audio file: ");
     [fileName, pathName] = uigetfile('*.wav');
     fullFilePath = fullfile(pathName, fileName);
     
-    mode = take_input("Choose mode:\n1) Standard\n2) Custom\n", 1, 2);
+    mode = take_input("Choose mode:\n1) Standard\n2) Custom\nEnter wanted mode: ", 1, 2);
     
     numOfBands = 9;
 
@@ -27,7 +27,7 @@ function [fullFilePath, bandsArray] = user_input()
             fprintf('Frequency Range: %d - %d\n', lower, upper);
         end
         gain = take_input('Enter gain in dB: ', -12, 12);
-        f_type = take_input('Enter Filter Type:\nFIR: \n1) Hamming\n2) Hanning\n3) Blackman\nIIR:\n4) ButterWorth\n5) Checbyshev I\n6) Chebyshev II\n', 1, 6);
+        f_type = take_input('Enter Filter Type:\nFIR: \n1) Hamming\n2) Hanning\n3) Blackman\nIIR:\n4) ButterWorth\n5) Checbyshev I\n6) Chebyshev II\nEnter wanted filter: ', 1, 6);
         f_order = take_input("Enter filter order: ", -inf, inf);
         
         bandsArray(index) = struct( ...
@@ -38,5 +38,10 @@ function [fullFilePath, bandsArray] = user_input()
             'f_order', f_order ...
         );
     end
-    
+    out_fs = take_input("Do you want to change output sampling rate?\n1) Yes\n2) No\nEnter Choice", 1, 2);
+    if out_fs == 1 
+        out_fs = take_input("Enter output sample rate: ", -inf, inf);
+    else
+        out_fs = 0;
+    end
 end
